@@ -1,24 +1,24 @@
-var x_PI = (Math.PI * 3000.0) / 180.0;
-var a = 6378245.0;
-var ee = 0.00669342162296594323;
+const x_PI = (Math.PI * 3000.0) / 180.0;
+const a = 6378245.0;
+const ee = 0.00669342162296594323;
 
 type Position = [number, number];
 
 export function bd09ToGcj02([bd_lng, bd_lat]: Position) {
-    var x = bd_lng - 0.0065;
-    var y = bd_lat - 0.006;
-    var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_PI);
-    var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_PI);
-    var gg_lng = z * Math.cos(theta);
-    var gg_lat = z * Math.sin(theta);
+    const x = bd_lng - 0.0065;
+    const y = bd_lat - 0.006;
+    const z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_PI);
+    const theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_PI);
+    const gg_lng = z * Math.cos(theta);
+    const gg_lat = z * Math.sin(theta);
     return [gg_lng, gg_lat];
 }
 
 export function gcj02ToBd09([lng, lat]: Position) {
-    var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_PI);
-    var theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * x_PI);
-    var bd_lng = z * Math.cos(theta) + 0.0065;
-    var bd_lat = z * Math.sin(theta) + 0.006;
+    const z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_PI);
+    const theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * x_PI);
+    const bd_lng = z * Math.cos(theta) + 0.0065;
+    const bd_lat = z * Math.sin(theta) + 0.006;
     return [bd_lng, bd_lat];
 }
 
@@ -26,17 +26,17 @@ export function wgs84ToGcj02([lng, lat]: Position) {
     if (outOfChina([lng, lat])) {
         return [lng, lat];
     } else {
-        var dlat = transformLat([lng - 105.0, lat - 35.0]);
-        var dlng = transformLng([lng - 105.0, lat - 35.0]);
-        var radlat = (lat / 180.0) * Math.PI;
-        var magic = Math.sin(radlat);
+        let dlat = transformLat([lng - 105.0, lat - 35.0]);
+        let dlng = transformLng([lng - 105.0, lat - 35.0]);
+        const radlat = (lat / 180.0) * Math.PI;
+        let magic = Math.sin(radlat);
         magic = 1 - ee * magic * magic;
-        var sqrtmagic = Math.sqrt(magic);
+        const sqrtmagic = Math.sqrt(magic);
         dlat =
             (dlat * 180.0) / (((a * (1 - ee)) / (magic * sqrtmagic)) * Math.PI);
         dlng = (dlng * 180.0) / ((a / sqrtmagic) * Math.cos(radlat) * Math.PI);
-        var mglat = lat + dlat;
-        var mglng = lng + dlng;
+        const mglat = lat + dlat;
+        const mglng = lng + dlng;
         return [mglng, mglat];
     }
 }
@@ -45,23 +45,23 @@ export function gcj02ToWgs84([lng, lat]: Position) {
     if (outOfChina([lng, lat])) {
         return [lng, lat];
     } else {
-        var dlat = transformLat([lng - 105.0, lat - 35.0]);
-        var dlng = transformLng([lng - 105.0, lat - 35.0]);
-        var radlat = (lat / 180.0) * Math.PI;
-        var magic = Math.sin(radlat);
+        let dlat = transformLat([lng - 105.0, lat - 35.0]);
+        let dlng = transformLng([lng - 105.0, lat - 35.0]);
+        const radlat = (lat / 180.0) * Math.PI;
+        let magic = Math.sin(radlat);
         magic = 1 - ee * magic * magic;
-        var sqrtmagic = Math.sqrt(magic);
+        const sqrtmagic = Math.sqrt(magic);
         dlat =
             (dlat * 180.0) / (((a * (1 - ee)) / (magic * sqrtmagic)) * Math.PI);
         dlng = (dlng * 180.0) / ((a / sqrtmagic) * Math.cos(radlat) * Math.PI);
-        var mglat = lat + dlat;
-        var mglng = lng + dlng;
+        const mglat = lat + dlat;
+        const mglng = lng + dlng;
         return [lng * 2 - mglng, lat * 2 - mglat];
     }
 }
 
 function transformLat([lng, lat]: Position) {
-    var ret =
+    let ret =
         -100.0 +
         2.0 * lng +
         3.0 * lat +
@@ -87,7 +87,7 @@ function transformLat([lng, lat]: Position) {
 }
 
 function transformLng([lng, lat]: Position) {
-    var ret =
+    let ret =
         300.0 +
         lng +
         2.0 * lat +
