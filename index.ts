@@ -2,7 +2,9 @@ var x_PI = (Math.PI * 3000.0) / 180.0;
 var a = 6378245.0;
 var ee = 0.00669342162296594323;
 
-export function bd09ToGcj02(bd_lng: number, bd_lat: number) {
+type Position = [number, number];
+
+export function bd09ToGcj02([bd_lng, bd_lat]: Position) {
     var x = bd_lng - 0.0065;
     var y = bd_lat - 0.006;
     var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_PI);
@@ -12,7 +14,7 @@ export function bd09ToGcj02(bd_lng: number, bd_lat: number) {
     return [gg_lng, gg_lat];
 }
 
-export function gcj02ToBd09(lng: number, lat: number) {
+export function gcj02ToBd09([lng, lat]: Position) {
     var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_PI);
     var theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * x_PI);
     var bd_lng = z * Math.cos(theta) + 0.0065;
@@ -20,12 +22,12 @@ export function gcj02ToBd09(lng: number, lat: number) {
     return [bd_lng, bd_lat];
 }
 
-export function wgs84ToGcj02(lng: number, lat: number) {
-    if (out_of_china(lng, lat)) {
+export function wgs84ToGcj02([lng, lat]: Position) {
+    if (outOfChina([lng, lat])) {
         return [lng, lat];
     } else {
-        var dlat = transformlat(lng - 105.0, lat - 35.0);
-        var dlng = transformlng(lng - 105.0, lat - 35.0);
+        var dlat = transformLat([lng - 105.0, lat - 35.0]);
+        var dlng = transformLng([lng - 105.0, lat - 35.0]);
         var radlat = (lat / 180.0) * Math.PI;
         var magic = Math.sin(radlat);
         magic = 1 - ee * magic * magic;
@@ -39,12 +41,12 @@ export function wgs84ToGcj02(lng: number, lat: number) {
     }
 }
 
-export function gcj02ToWgs84(lng: number, lat: number) {
-    if (out_of_china(lng, lat)) {
+export function gcj02ToWgs84([lng, lat]: Position) {
+    if (outOfChina([lng, lat])) {
         return [lng, lat];
     } else {
-        var dlat = transformlat(lng - 105.0, lat - 35.0);
-        var dlng = transformlng(lng - 105.0, lat - 35.0);
+        var dlat = transformLat([lng - 105.0, lat - 35.0]);
+        var dlng = transformLng([lng - 105.0, lat - 35.0]);
         var radlat = (lat / 180.0) * Math.PI;
         var magic = Math.sin(radlat);
         magic = 1 - ee * magic * magic;
@@ -58,7 +60,7 @@ export function gcj02ToWgs84(lng: number, lat: number) {
     }
 }
 
-function transformlat(lng: number, lat: number) {
+function transformLat([lng, lat]: Position) {
     var ret =
         -100.0 +
         2.0 * lng +
@@ -84,7 +86,7 @@ function transformlat(lng: number, lat: number) {
     return ret;
 }
 
-function transformlng(lng: number, lat: number) {
+function transformLng([lng, lat]: Position) {
     var ret =
         300.0 +
         lng +
@@ -110,7 +112,7 @@ function transformlng(lng: number, lat: number) {
     return ret;
 }
 
-function out_of_china(lng: number, lat: number) {
+function outOfChina([lng, lat]: Position) {
     // 纬度 3.86~53.55, 经度 73.66~135.05
     return !(lng > 73.66 && lng < 135.05 && lat > 3.86 && lat < 53.55);
 }
