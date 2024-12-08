@@ -30,7 +30,7 @@
      * @param bd_lat
      * @returns {*[]}
      */
-    var bd09togcj02 = function bd09togcj02(bd_lng, bd_lat) {
+    var bd09ToGcj02 = function bd09ToGcj02(bd_lng, bd_lat) {
         var bd_lng = +bd_lng;
         var bd_lat = +bd_lat;
         var x = bd_lng - 0.0065;
@@ -49,7 +49,7 @@
      * @param lat
      * @returns {*[]}
      */
-    var gcj02tobd09 = function gcj02tobd09(lng, lat) {
+    var gcj02ToBd09 = function gcj02ToBd09(lng, lat) {
         var lat = +lat;
         var lng = +lng;
         var z =
@@ -66,7 +66,7 @@
      * @param lat
      * @returns {*[]}
      */
-    var wgs84togcj02 = function wgs84togcj02(lng, lat) {
+    var wgs84ToGcj02 = function wgs84ToGcj02(lng, lat) {
         var lat = +lat;
         var lng = +lng;
         if (out_of_china(lng, lat)) {
@@ -93,7 +93,7 @@
      * @param lat
      * @returns {*[]}
      */
-    var gcj02towgs84 = function gcj02towgs84(lng, lat) {
+    var gcj02ToWgs84 = function gcj02ToWgs84(lng, lat) {
         var lat = +lat;
         var lng = +lng;
         if (out_of_china(lng, lat)) {
@@ -182,9 +182,9 @@
     };
 
     return {
-        bd09togcj02: bd09togcj02,
-        gcj02tobd09: gcj02tobd09,
-        wgs84togcj02: wgs84togcj02,
-        gcj02towgs84: gcj02towgs84,
+        bd09ToGcj02: bd09ToGcj02,
+        gcj02ToBd09: gcj02ToBd09,
+        wgs84ToGcj02: wgs84ToGcj02,
+        gcj02ToWgs84: gcj02ToWgs84,
     };
 });
